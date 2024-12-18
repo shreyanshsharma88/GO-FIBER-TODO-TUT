@@ -17,14 +17,18 @@ func UserSignUpHandler(c *fiber.Ctx) error {
 	}
 
 	data, err := db.DBPool.Query(c.Context(), "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *", user.Username, user.Password)
+	
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{
 			"message": "Cannot insert user",
 		})
 	}
+
+	token , _:= auth.GenerateJwt(user.Username, user.ID)
 	return c.Status(201).JSON(fiber.Map{
 		"message": "User created",
 		"data":    data,
+		"token": token,
 	})
 }
 

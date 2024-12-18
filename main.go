@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/gofiber/fiber/v2"
 	"go-fiber/db"
+	"go-fiber/middleware"
 	"go-fiber/routes"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
@@ -26,6 +28,7 @@ func main() {
 	routes.RegisterUserRoutes(userRouter)
 
 	todoRouter := app.Group("/api/todo")
+	todoRouter.Use(middleware.TodoMiddleware)
 	routes.RegisterTodoRoutes(todoRouter)
 
 	fmt.Println("Server is running on port :8080")

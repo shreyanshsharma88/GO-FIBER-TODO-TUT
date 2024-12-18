@@ -17,3 +17,16 @@ func GenerateJwt(username string, id string) (string, error) {
 	return tokenString, nil
 
 }
+
+func VerifyJwtToken(token string) interface{} {
+	data, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
+		return secretKey, nil
+	})
+
+	if err != nil {
+		return nil
+	}
+	claims := data.Claims.(jwt.MapClaims)
+	return claims["id"]
+
+}
