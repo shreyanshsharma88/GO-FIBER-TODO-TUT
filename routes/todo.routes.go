@@ -8,7 +8,7 @@ import (
 
 func RegisterTodoRoutes (api fiber.Router){
 	api.Get("/", handlers.GetTodosHandler)
-	// api.Post("/")
-	// api.Delete("/:id")
-	// api.Put("/:id")
+	api.Post("/", handlers.AddTodoHandler)
+	api.Delete("/:id", handlers.DeleteTodoHandler)
+	api.Put("/:id", handlers.UpdateTodoHandler)
 }

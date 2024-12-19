@@ -1,14 +1,18 @@
 package auth
 
-import "github.com/golang-jwt/jwt"
+import "github.com/golang-jwt/jwt/v5"
 
 var secretKey = []byte("secret")
 
 func GenerateJwt(username string, id string) (string, error) {
-	token := jwt.New(jwt.SigningMethodHS256)
-	claims := token.Claims.(jwt.MapClaims)
-	claims["username"] = username
-	claims["id"] = id
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"username": username,
+		"id":       id,
+	})
+
+	// claims := token.Claims.(jwt.MapClaims)
+	// claims["username"] = username
+	// claims["id"] = id
 
 	tokenString, err := token.SignedString(secretKey)
 	if err != nil {
@@ -27,6 +31,6 @@ func VerifyJwtToken(token string) interface{} {
 		return nil
 	}
 	claims := data.Claims.(jwt.MapClaims)
-	return claims["id"]
+	return  claims["id"]
 
 }
